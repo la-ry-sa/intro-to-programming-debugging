@@ -25,9 +25,22 @@ function getRandomNumber(min, max) {
 function checkGuess() {
   // Get value from guess input element
   const guess = parseInt(guessInput.value, 10);
-  attempts = attempts + 1;
+  // Empty input not accepted. Further code not executed
+  if (guessInput.value === '') { 
+    alert('You must enter a number!');
+    return;
+  }
 
+  attempts = attempts + 1;
   hideAllMessages();
+
+  // removed an extra '=' sign in the condition
+  // used maxGuessesMessage, which was not used at all
+  if (attempts === maxNumberOfAttempts) {
+    submitButton.disabled = true;
+    guessInput.disabled = true;
+    maxGuessesMessage.style.display = '';
+  }
 
   if (guess === targetNumber) {
     numberOfGuessesMessage.style.display = '';
@@ -40,8 +53,7 @@ function checkGuess() {
   }
 
   //Both times 'tooLowMessage' was used, fixed 
-  if (guess !== targetNumber) {
-    if (guess < targetNumber) {
+    else if (guess < targetNumber) {
       tooLowMessage.style.display = '';
     } else {
       tooHighMessage.style.display = '';
@@ -51,13 +63,6 @@ function checkGuess() {
 
     numberOfGuessesMessage.style.display = '';
     numberOfGuessesMessage.innerHTML = `You guessed ${guess}. <br> ${remainingAttempts} guesses remaining`;
-  }
-
-  // removed an extra '=' sign
-  if (attempts === maxNumberOfAttempts) {
-    submitButton.disabled = true;
-    guessInput.disabled = true;
-  }
 
   guessInput.value = '';
 
